@@ -8,8 +8,10 @@ import java.util.UUID
 data class Task(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val title: String,
-    val description: String = "",
-    val importance: Int,  // 1-10 (размер пузыря)
-    val urgency: Int,     // 1-10 (позиция на экране)
-    val createdAt: Long = System.currentTimeMillis()
+    val importance: Int,  // 1-7 (размер пузыря)
+    val urgency: Int,     // 1-7 (позиция на экране)
+    val createdAt: Long = System.currentTimeMillis(),
+
+    val deadline: Long? = null,       // timestamp в millis, nullable
+    val reminderEnabled: Boolean = false // включены ли напоминания
 )

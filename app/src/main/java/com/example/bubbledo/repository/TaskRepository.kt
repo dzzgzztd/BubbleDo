@@ -1,22 +1,21 @@
 package com.example.bubbledo.repository
 
+import android.content.Context
+import com.example.bubbledo.local.TaskDatabase
 import com.example.bubbledo.model.Task
+import kotlinx.coroutines.flow.Flow
 
-class TaskRepository {
+class TaskRepository(context: Context) {
 
-    private val tasks = mutableListOf<Task>()
+    private val taskDao = TaskDatabase.getDatabase(context.applicationContext).taskDao()
 
-    // Получаем все задачи
-    fun getAllTasks(): List<Task> {
-        // Здесь будет логика загрузки данных
-        return tasks
+    fun getAllTasks(): Flow<List<Task>> = taskDao.getAllTasks()
+
+    suspend fun insertOrUpdateTask(task: Task) {
+        taskDao.insertTask(task)
     }
 
-    // Обновление срочности задачи в репозитории
-    fun updateTaskUrgency(taskId: String, newUrgency: Int) {
-        val taskIndex = tasks.indexOfFirst { it.id == taskId }
-        if (taskIndex != -1) {
-            tasks[taskIndex] = tasks[taskIndex].copy(urgency = newUrgency)
-        }
+    suspend fun deleteTask(taskId: String) {
+        taskDao.deleteTask(taskId)
     }
 }
